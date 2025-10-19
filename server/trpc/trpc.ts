@@ -1,0 +1,14 @@
+import { initTRPC } from "@trpc/server";
+import { ZodError } from "zod";
+
+const t = initTRPC.create({
+  errorFormatter({ shape, error }) {
+    return {
+      ...shape,
+      message: error instanceof ZodError ? error.message : shape.message,
+    };
+  },
+});
+
+export const router = t.router;
+export const publicProcedure = t.procedure;
